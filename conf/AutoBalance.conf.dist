@@ -48,12 +48,39 @@ AutoBalance.InflectionPointRaid25MHeroic=0.5
 AutoBalance.InflectionPointRaid=0.5
 AutoBalance.InflectionPointRaidHeroic=0.5
 
+#       The Ruby Sanctum
+
+AutoBalance.InflectionPointTheRubySanctumRaid10M=0.5
+AutoBalance.InflectionPointTheRubySanctumRaid25M=0.5
+
+#       Icecrown Citadel
+
 AutoBalance.InflectionPointIcecrownCitadelRaid10M=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic=0.5
-
 AutoBalance.InflectionPointIcecrownCitadelRaid25M=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic=0.5
 
+#       Trial of the Crusader
+
+AutoBalance.InflectionPointTrialOfCrusaderRaid10M=0.5
+AutoBalance.InflectionPointTrialOfCrusaderRaid10MHeroic=0.5
+AutoBalance.InflectionPointTrialOfCrusaderRaid25M=0.5
+AutoBalance.InflectionPointTrialOfCrusaderRaid25MHeroic=0.5
+
+#       Ulduar
+
+AutoBalance.InflectionPointUlduarRaid10M=0.5
+AutoBalance.InflectionPointUlduarRaid25M=0.5
+
+#       The Obsidian Sanctum
+
+AutoBalance.InflectionPointTheObsidianSanctumRaid10M=0.5
+AutoBalance.InflectionPointTheObsidianSanctumRaid25M=0.5
+
+#       Naxxramas
+
+AutoBalance.InflectionPointNaxxramasRaid10M=0.5
+AutoBalance.InflectionPointNaxxramasRaid25M=0.5
 
 #
 #     AutoBalance.BossInflectionMult
