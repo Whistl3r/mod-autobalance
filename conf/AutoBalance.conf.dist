@@ -48,6 +48,12 @@ AutoBalance.InflectionPointRaid25MHeroic=0.5
 AutoBalance.InflectionPointRaid=0.5
 AutoBalance.InflectionPointRaidHeroic=0.5
 
+AutoBalance.InflectionPointIcecrownCitadelRaid10M=0.5
+AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic=0.5
+
+AutoBalance.InflectionPointIcecrownCitadelRaid25M=0.5
+AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic=0.5
+
 
 #
 #     AutoBalance.BossInflectionMult

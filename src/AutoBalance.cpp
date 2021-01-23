@@ -112,7 +112,9 @@ static int8 PlayerCountDifficultyOffset, LevelScaling, higherOffset, lowerOffset
 static uint32 rewardRaid, rewardDungeon, MinPlayerReward;
 static bool enabled, LevelEndGameBoost, DungeonsOnly, PlayerChangeNotify, LevelUseDb, rewardEnabled, DungeonScaleDownXP;
 static float globalRate, healthMultiplier, manaMultiplier, armorMultiplier, damageMultiplier, MinHPModifier, MinManaModifier, MinDamageModifier,
-InflectionPoint, InflectionPointRaid, InflectionPointRaid10M, InflectionPointRaid25M, InflectionPointHeroic, InflectionPointRaidHeroic, InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, BossInflectionMult;
+InflectionPoint, InflectionPointRaid, InflectionPointRaid10M, InflectionPointRaid25M, InflectionPointHeroic, InflectionPointRaidHeroic,
+InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, InflectionPointIcecrownCitadelRaid10M, InflectionPointIcecrownCitadelRaid10MHeroic,
+InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHeroic, BossInflectionMult;
 
 int GetValidDebugLevel()
 {
@@ -218,6 +220,11 @@ class AutoBalance_WorldScript : public WorldScript
         InflectionPointRaidHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointRaidHeroic", InflectionPointRaid);
         InflectionPointRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointRaid25MHeroic", InflectionPointRaid25M);
         InflectionPointRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointRaid10MHeroic", InflectionPointRaid10M);
+        InflectionPointIcecrownCitadelRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid10M", InflectionPointRaid10M);
+        InflectionPointIcecrownCitadelRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic", InflectionPointRaid10M);
+        InflectionPointIcecrownCitadelRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid25M", InflectionPointRaid10M);
+        InflectionPointIcecrownCitadelRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic", InflectionPointRaid10M);
+        
         BossInflectionMult = sConfigMgr->GetFloatDefault("AutoBalance.BossInflectionMult", 1.0f);
         globalRate = sConfigMgr->GetFloatDefault("AutoBalance.rate.global", 1.0f);
         healthMultiplier = sConfigMgr->GetFloatDefault("AutoBalance.rate.health", 1.0f);
@@ -584,48 +591,91 @@ public:
         if (creatureABInfo->instancePlayerCount < maxNumberOfPlayers)
         {
             float inflectionValue  = (float)maxNumberOfPlayers;
-
-            if (instanceMap->IsHeroic())
-            {
-                if (instanceMap->IsRaid())
-                {
-                    switch (instanceMap->GetMaxPlayers())
-                    {
-                        case 10:
-                            inflectionValue *= InflectionPointRaid10MHeroic;
-                            break;
-                        case 25:
-                            inflectionValue *= InflectionPointRaid25MHeroic;
-                            break;
-                        default:
-                            inflectionValue *= InflectionPointRaidHeroic;
-                    }
-                }
-                else
-                    inflectionValue *= InflectionPointHeroic;
-            }
-            else
-            {
-                if (instanceMap->IsRaid())
-                {
-                    switch (instanceMap->GetMaxPlayers())
-                    {
-                        case 10:
-                            inflectionValue *= InflectionPointRaid10M;
-                            break;
-                        case 25:
-                            inflectionValue *= InflectionPointRaid25M;
-                            break;
-                        default:
-                            inflectionValue *= InflectionPointRaid;
-                    }
-                }
-                else
-                    inflectionValue *= InflectionPoint;
-            }
-            if (creature->IsDungeonBoss()) {
-                inflectionValue *= BossInflectionMult;
-            }
+			
+			if (creature->GetAreaId() == 4812) 
+			{							
+                if (instanceMap->IsHeroic())
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointIcecrownCitadelRaid10MHeroic;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointIcecrownCitadelRaid25MHeroic;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaidHeroic;
+						}
+					}					
+				}
+				else
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointIcecrownCitadelRaid10M;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointIcecrownCitadelRaid25M;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaid;
+						}
+					}					
+				}
+				if (creature->IsDungeonBoss()) {
+					inflectionValue *= BossInflectionMult;
+				}
+			}
+			else
+			{									
+				if (instanceMap->IsHeroic())
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointRaid10MHeroic;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointRaid25MHeroic;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaidHeroic;
+						}
+					}
+					else
+						inflectionValue *= InflectionPointHeroic;
+				}
+				else
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointRaid10M;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointRaid25M;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaid;
+						}
+					}
+					else
+						inflectionValue *= InflectionPoint;
+				}
+				if (creature->IsDungeonBoss()) {
+					inflectionValue *= BossInflectionMult;
+				}			
+			}
 
             float diff = ((float)maxNumberOfPlayers/5)*1.5f;
             defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;
