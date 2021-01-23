@@ -52,6 +52,8 @@ AutoBalance.InflectionPointRaidHeroic=0.5
 
 AutoBalance.InflectionPointTheRubySanctumRaid10M=0.5
 AutoBalance.InflectionPointTheRubySanctumRaid25M=0.5
+AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic=0.5
+AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic=0.5
 
 #       Icecrown Citadel
 

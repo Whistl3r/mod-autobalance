@@ -117,7 +117,8 @@ InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, InflectionPointIcecr
 InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHeroic, InflectionPointTrialOfCrusaderRaid10M,
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
-InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M, BossInflectionMult;
+InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M,
+InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult;
 
 int GetValidDebugLevel()
 {
@@ -245,6 +246,9 @@ class AutoBalance_WorldScript : public WorldScript
 
         InflectionPointTheRubySanctumRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25M", InflectionPointRaid);
         InflectionPointTheRubySanctumRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10M", InflectionPointRaid);
+        InflectionPointTheRubySanctumRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic", InflectionPointRaid25M);
+        InflectionPointTheRubySanctumRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic", InflectionPointRaid10M);
+
 
         BossInflectionMult = sConfigMgr->GetFloatDefault("AutoBalance.BossInflectionMult", 1.0f);
         globalRate = sConfigMgr->GetFloatDefault("AutoBalance.rate.global", 1.0f);
@@ -754,21 +758,41 @@ public:
 				}     
             } 
             else if (creature->GetZoneId() == 4987) // TheRubySanctum
-            {                				
-                if (instanceMap->IsRaid())
-                {
-                    switch (instanceMap->GetMaxPlayers())
-                    {
-                        case 10:
-                            inflectionValue *= InflectionPointTheRubySanctumRaid10M;
-                            break;
-                        case 25:
-                            inflectionValue *= InflectionPointTheRubySanctumRaid25M;
-                            break;
-                        default:
-                            inflectionValue *= InflectionPointRaid;
-                    }
-                }									
+            {                						
+                if (instanceMap->IsHeroic())
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointTheRubySanctumRaid10MHeroic;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointTheRubySanctumRaid25MHeroic;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaidHeroic;
+						}
+					}					
+				}
+				else
+				{
+					if (instanceMap->IsRaid())
+					{
+						switch (instanceMap->GetMaxPlayers())
+						{
+							case 10:
+								inflectionValue *= InflectionPointTheRubySanctumRaid10M;
+								break;
+							case 25:
+								inflectionValue *= InflectionPointTheRubySanctumRaid25M;
+								break;
+							default:
+								inflectionValue *= InflectionPointRaid;
+						}
+					}					
+				}				
 				if (creature->IsDungeonBoss()) {
 					inflectionValue *= BossInflectionMult;
 				}     
