@@ -118,7 +118,7 @@ InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHero
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
 InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M,
-InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult;
+InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25HCOozeDmg;
 
 int GetValidDebugLevel()
 {
@@ -249,6 +249,9 @@ class AutoBalance_WorldScript : public WorldScript
         InflectionPointTheRubySanctumRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic", InflectionPointRaid25M);
         InflectionPointTheRubySanctumRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic", InflectionPointRaid10M);
 
+        // Icc 25HC PP Tuning
+        Icc25HCOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeHp", 1);
+        Icc25HCOozeDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeDmg", 1);
 
         BossInflectionMult = sConfigMgr->GetFloatDefault("AutoBalance.BossInflectionMult", 1.0f);
         globalRate = sConfigMgr->GetFloatDefault("AutoBalance.rate.global", 1.0f);
@@ -944,6 +947,17 @@ public:
         uint32 prevPower = creature->GetPower(POWER_MANA);
 
         Powers pType= creature->getPowerType();
+
+        // Icecrown Citadel 25HC PP Boss tuning
+        if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
+        {
+            string creatureName = creature->GetName();
+            if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
+            {                
+                damageMul *= Icc25HCOozeDmg;
+                scaledHealth = round(((float) scaledHealth * Icc25HCOozeHp) + 1.0f);
+            }
+        }
 
         creature->SetArmor(newBaseArmor);
         creature->SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, (float)newBaseArmor);

@@ -62,6 +62,11 @@ AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid25M=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic=0.5
 
+#       Icecrown Citadel 25 HC PP Oozes Tuning Multipliers
+
+AutoBalance.Icc25HCOozeHp=0.5
+AutoBalance.Icc25HCOozeDmg=0.5
+
 #       Trial of the Crusader
 
 AutoBalance.InflectionPointTrialOfCrusaderRaid10M=0.5
