@@ -118,7 +118,7 @@ InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHero
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
 InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M,
-InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25HCOozeDmg;
+InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
 
 int GetValidDebugLevel()
 {
@@ -252,6 +252,7 @@ class AutoBalance_WorldScript : public WorldScript
         // Icc 25HC PP Tuning
         Icc25HCOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeHp", 1);
         Icc25HCOozeDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeDmg", 1);
+        Icc25HCGascloudDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCGascloudDmg", 1);
 
         BossInflectionMult = sConfigMgr->GetFloatDefault("AutoBalance.BossInflectionMult", 1.0f);
         globalRate = sConfigMgr->GetFloatDefault("AutoBalance.rate.global", 1.0f);
@@ -954,7 +955,14 @@ public:
             string creatureName = creature->GetName();
             if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
             {                
-                damageMul *= Icc25HCOozeDmg;
+                if (creatureName == "Gas Cloud")
+                {
+                    damageMul *= Icc25HCGascloudDmg;      
+                }
+                if (creatureName == "Volatile Ooze")
+                {
+                    damageMul *= Icc25HCOozeDmg;
+                }                
                 scaledHealth = round(((float) scaledHealth * Icc25HCOozeHp) + 1.0f);
             }
         }
