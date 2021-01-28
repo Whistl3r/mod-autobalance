@@ -845,9 +845,33 @@ public:
 					inflectionValue *= BossInflectionMult;
 				}			
 			}
+            float diff = ((float)maxNumberOfPlayers/5)*1.5f;                                    
+            if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 hc new scaling function 
+            {
+                if (creatureABInfo->instancePlayerCount < 5)
+                {
+                    defaultMultiplier = (float)5 / instanceMap->GetMaxPlayers(); // Avoid farming       
+                    globalRate = 1.0f; 
+                }
+                else
+                {
+                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
+                    globalRate = 1.0f;
+                }
+            }
+            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 hc new scaling function
+            {
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
+                globalRate = 1.0f;
+            }
+            else
+            {
+                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;    
+                globalRate = 0.9f;    
+            }            
 
-            float diff = ((float)maxNumberOfPlayers/5)*1.5f;
-            defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;
+            
+
         }
 
         if (!sABScriptMgr->OnAfterDefaultMultiplier(creature, defaultMultiplier))
