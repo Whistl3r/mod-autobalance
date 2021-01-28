@@ -848,9 +848,9 @@ public:
             float diff = ((float)maxNumberOfPlayers/5)*1.5f;                                    
             if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 hc new scaling function 
             {
-                if (creatureABInfo->instancePlayerCount < 5)
+                if (creatureABInfo->instancePlayerCount < 3)
                 {
-                    defaultMultiplier = (float)5 / instanceMap->GetMaxPlayers(); // Avoid farming       
+                    defaultMultiplier = (float)3 / instanceMap->GetMaxPlayers(); // Avoid farming       
                     globalRate = 1.0f; 
                 }
                 else
