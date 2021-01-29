@@ -845,8 +845,8 @@ public:
 					inflectionValue *= BossInflectionMult;
 				}			
 			}
-            float diff = ((float)maxNumberOfPlayers/5)*1.5f;                                    
-            if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 hc new scaling function 
+                                              
+            if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 HC new scaling function 
             {
                 if (creatureABInfo->instancePlayerCount < 3)
                 {
@@ -859,19 +859,40 @@ public:
                     globalRate = 1.0f;
                 }
             }
-            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 hc new scaling function
+            else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 NM new scaling function
             {
                 defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
                 globalRate = 1.0f;
             }
+            else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 NM new scaling function
+            {
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
+                globalRate = 1.0f;
+            }
+            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 HC new scaling function
+            {
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
+                globalRate = 0.9f;
+            }
+            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 HC new scaling function
+            {
+                if (creatureABInfo->instancePlayerCount < 3)
+                {
+                    defaultMultiplier = (float)3 / instanceMap->GetMaxPlayers(); // Avoid farming
+                    globalRate = 1.15f;
+                }        
+                else
+                {
+                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
+                    globalRate = 1.15f;
+                }
+            }
             else
             {
+                float diff = ((float)maxNumberOfPlayers/5)*1.5f;  
                 defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;    
                 globalRate = 0.9f;    
             }            
-
-            
-
         }
 
         if (!sABScriptMgr->OnAfterDefaultMultiplier(creature, defaultMultiplier))
@@ -974,7 +995,7 @@ public:
         Powers pType= creature->getPowerType();
 
         // Icecrown Citadel 25HC PP Boss tuning
-        if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
+        if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
         {
             string creatureName = creature->GetName();
             if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
@@ -988,6 +1009,10 @@ public:
                     damageMul *= Icc25HCOozeDmg;
                 }                
                 scaledHealth = round(((float) scaledHealth * Icc25HCOozeHp) + 1.0f);
+            }
+            if (creatureName == "Val'kyr Shadowguard")
+            {
+            scaledHealth = ((creatureABInfo->instancePlayerCount/12.5)*scaledHealth)+scaledHealth;
             }
         }
 
