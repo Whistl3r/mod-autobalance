@@ -1030,7 +1030,7 @@ public:
             }
         }
 
-        // TODO Clean Up this garbage
+        // TODO Clean Up this mess
         if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
         {
             string creatureName = creature->GetName();
