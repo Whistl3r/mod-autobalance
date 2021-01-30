@@ -118,7 +118,7 @@ InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHero
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
 InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M,
-InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
+InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25NMOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
 
 int GetValidDebugLevel()
 {
@@ -251,6 +251,7 @@ class AutoBalance_WorldScript : public WorldScript
 
         // Icc 25HC PP Tuning
         Icc25HCOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeHp", 1);
+        Icc25NMOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25NMOozeHp", 1);
         Icc25HCOozeDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeDmg", 1);
         Icc25HCGascloudDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCGascloudDmg", 1);
 
@@ -1013,6 +1014,15 @@ public:
             if (creatureName == "Val'kyr Shadowguard")
             {
             scaledHealth = ((creatureABInfo->instancePlayerCount/12.5)*scaledHealth)+scaledHealth;
+            }
+        }
+
+        if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
+        {
+            string creatureName = creature->GetName();
+            if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
+            {      
+                scaledHealth = round(((float) scaledHealth * Icc25NMOozeHp) + 1.0f);
             }
         }
 
