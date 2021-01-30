@@ -862,7 +862,7 @@ public:
             else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 NM new scaling function
             {
                 defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                globalRate = 1.0f;
+                globalRate = 0.9f;
             }
             else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 NM new scaling function
             {
@@ -872,7 +872,7 @@ public:
             else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 HC new scaling function
             {
                 defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                globalRate = 0.9f;
+                globalRate = 0.85f;
             }
             else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 HC new scaling function
             {
