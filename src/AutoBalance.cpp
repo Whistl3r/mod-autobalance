@@ -113,12 +113,20 @@ static uint32 rewardRaid, rewardDungeon, MinPlayerReward;
 static bool enabled, LevelEndGameBoost, DungeonsOnly, PlayerChangeNotify, LevelUseDb, rewardEnabled, DungeonScaleDownXP;
 static float globalRate, healthMultiplier, manaMultiplier, armorMultiplier, damageMultiplier, MinHPModifier, MinManaModifier, MinDamageModifier,
 InflectionPoint, InflectionPointRaid, InflectionPointRaid10M, InflectionPointRaid25M, InflectionPointHeroic, InflectionPointRaidHeroic,
-InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, InflectionPointIcecrownCitadelRaid10M, InflectionPointIcecrownCitadelRaid10MHeroic,
-InflectionPointIcecrownCitadelRaid25M, InflectionPointIcecrownCitadelRaid25MHeroic, InflectionPointTrialOfCrusaderRaid10M,
+InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, InflectionPointTrialOfCrusaderRaid10M,
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
-InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M,
-InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic, BossInflectionMult, Icc25HCOozeHp, Icc25NMOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
+InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, BossInflectionMult, Icc25HCOozeHp, Icc25NMOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
+
+static bool LinearTheRubySanctum10M, LinearTheRubySanctum25M, LinearTheRubySanctum10MHeroic, LinearTheRubySanctum25MHeroic;
+static float InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M, InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic,
+globalRateTheRubySanctum10M, globalRateTheRubySanctum25M, globalRateTheRubySanctum10MHeroic, globalRateTheRubySanctum25MHeroic;
+
+static bool LinearIcecrownCitadel10M, LinearIcecrownCitadel25M, LinearIcecrownCitadel10MHeroic, LinearIcecrownCitadel25MHeroic;
+static float InflectionPointIcecrownCitadelRaid10M, InflectionPointIcecrownCitadelRaid10MHeroic, InflectionPointIcecrownCitadelRaid25M,
+InflectionPointIcecrownCitadelRaid25MHeroic, globalRateIcecrownCitadel10M, globalRateIcecrownCitadel25M, globalRateIcecrownCitadel10MHeroic, globalRateIcecrownCitadel25MHeroic; 
+
+static uint32 requiredMinimumEndgame;
 
 int GetValidDebugLevel()
 {
@@ -225,6 +233,29 @@ class AutoBalance_WorldScript : public WorldScript
         InflectionPointRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointRaid25MHeroic", InflectionPointRaid25M);
         InflectionPointRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointRaid10MHeroic", InflectionPointRaid10M);
         
+        requiredMinimumEndgame = sConfigMgr->GetFloatDefault("AutoBalance.requiredMinimumEndgame", 3);
+
+        LinearTheRubySanctum10M = sConfigMgr->GetBoolDefault("AutoBalance.LinearTheRubySanctum10M", 0);
+        LinearTheRubySanctum25M = sConfigMgr->GetBoolDefault("AutoBalance.LinearTheRubySanctum25M", 0);
+        LinearTheRubySanctum10MHeroic = sConfigMgr->GetBoolDefault("AutoBalance.LinearTheRubySanctum10MHeroic", 0);
+        LinearTheRubySanctum25MHeroic = sConfigMgr->GetBoolDefault("AutoBalance.LinearTheRubySanctum25MHeroic", 0);
+        globalRateTheRubySanctum10M = sConfigMgr->GetFloatDefault("AutoBalance.globalRateTheRubySanctum10M", 1.0f);
+        globalRateTheRubySanctum25M = sConfigMgr->GetFloatDefault("AutoBalance.globalRateTheRubySanctum25M", 1.0f);
+        globalRateTheRubySanctum10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.globalRateTheRubySanctum10MHeroic", 1.0f);
+        globalRateTheRubySanctum25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.globalRateTheRubySanctum25MHeroic", 1.0f);
+        InflectionPointTheRubySanctumRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10M", InflectionPointRaid);
+        InflectionPointTheRubySanctumRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25M", InflectionPointRaid);
+        InflectionPointTheRubySanctumRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic", InflectionPointRaid10M);
+        InflectionPointTheRubySanctumRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic", InflectionPointRaid25M);
+        
+        LinearIcecrownCitadel10M = sConfigMgr->GetBoolDefault("AutoBalance.LinearIcecrownCitadel10M", 0);
+        LinearIcecrownCitadel25M = sConfigMgr->GetBoolDefault("AutoBalance.LinearIcecrownCitadel25M", 0);
+        LinearIcecrownCitadel10MHeroic = sConfigMgr->GetBoolDefault("AutoBalance.LinearIcecrownCitadel10MHeroic", 0);
+        LinearIcecrownCitadel25MHeroic = sConfigMgr->GetBoolDefault("AutoBalance.LinearIcecrownCitadel25MHeroic", 0);
+        globalRateIcecrownCitadel10M = sConfigMgr->GetFloatDefault("AutoBalance.globalRateIcecrownCitadel10M", 1.0f);
+        globalRateIcecrownCitadel25M = sConfigMgr->GetFloatDefault("AutoBalance.globalRateIcecrownCitadel25M", 1.0f);
+        globalRateIcecrownCitadel10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.globalRateIcecrownCitadel10MHeroic", 1.0f);
+        globalRateIcecrownCitadel25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.globalRateIcecrownCitadel25MHeroic", 1.0f);
         InflectionPointIcecrownCitadelRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid25M", InflectionPointRaid);
         InflectionPointIcecrownCitadelRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid10M", InflectionPointRaid);       
         InflectionPointIcecrownCitadelRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic", InflectionPointRaid25M);
@@ -244,10 +275,7 @@ class AutoBalance_WorldScript : public WorldScript
         InflectionPointTheObsidianSanctumRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheObsidianSanctumRaid25M", InflectionPointRaid);
         InflectionPointTheObsidianSanctumRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheObsidianSanctumRaid10M", InflectionPointRaid);
 
-        InflectionPointTheRubySanctumRaid25M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25M", InflectionPointRaid);
-        InflectionPointTheRubySanctumRaid10M = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10M", InflectionPointRaid);
-        InflectionPointTheRubySanctumRaid25MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic", InflectionPointRaid25M);
-        InflectionPointTheRubySanctumRaid10MHeroic = sConfigMgr->GetFloatDefault("AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic", InflectionPointRaid10M);
+        
 
         // Icc 25HC PP Tuning
         Icc25HCOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeHp", 1);
@@ -620,26 +648,63 @@ public:
         float defaultMultiplier = 1.0f;
         if (creatureABInfo->instancePlayerCount < maxNumberOfPlayers)
         {
-            float inflectionValue  = (float)maxNumberOfPlayers;
-			
-			if (creature->GetZoneId() == 4812) // Icecrown Citadel Raid
-			{							
-                if (instanceMap->IsHeroic())
+            float inflectionValue  = (float)maxNumberOfPlayers;			            
+
+            if (creature->GetZoneId() == 4987) // TheRubySanctum
+            {                						
+                if (instanceMap->IsHeroic() && instanceMap->IsRaid())
+				{
+                    switch (instanceMap->GetMaxPlayers())
+                    {
+                        case 10:
+                            inflectionValue *= InflectionPointTheRubySanctumRaid10MHeroic;
+                            globalRate = globalRateTheRubySanctum10MHeroic;                            
+                            break;
+                        case 25:
+                            inflectionValue *= InflectionPointTheRubySanctumRaid25MHeroic;
+                            globalRate = globalRateTheRubySanctum25MHeroic;                                                      
+                            break;
+                        default:
+                            inflectionValue *= InflectionPointRaidHeroic;
+                    }					
+				}
+				else
 				{
 					if (instanceMap->IsRaid())
 					{
 						switch (instanceMap->GetMaxPlayers())
 						{
 							case 10:
-								inflectionValue *= InflectionPointIcecrownCitadelRaid10MHeroic;
+								inflectionValue *= InflectionPointTheRubySanctumRaid10M;
+                                globalRate = globalRateTheRubySanctum10M;                                
 								break;
 							case 25:
-								inflectionValue *= InflectionPointIcecrownCitadelRaid25MHeroic;
+								inflectionValue *= InflectionPointTheRubySanctumRaid25M;
+                                globalRate = globalRateTheRubySanctum25M;                                                           
 								break;
 							default:
-								inflectionValue *= InflectionPointRaidHeroic;
+								inflectionValue *= InflectionPointRaid;
 						}
 					}					
+				}				
+            }
+			else if (creature->GetZoneId() == 4812) // Icecrown Citadel Raid
+			{							
+                if (instanceMap->IsHeroic() && instanceMap->IsRaid())
+				{					
+                    switch (instanceMap->GetMaxPlayers())
+                    {
+                        case 10:
+                            inflectionValue *= InflectionPointIcecrownCitadelRaid10MHeroic;
+                            globalRate = globalRateIcecrownCitadel10MHeroic;                            
+                            break;
+                        case 25:
+                            inflectionValue *= InflectionPointIcecrownCitadelRaid25MHeroic;
+                            globalRate = globalRateIcecrownCitadel25MHeroic;                                                         
+                            break;
+                        default:
+                            inflectionValue *= InflectionPointRaidHeroic;
+                    }										
 				}
 				else
 				{
@@ -649,37 +714,33 @@ public:
 						{
 							case 10:
 								inflectionValue *= InflectionPointIcecrownCitadelRaid10M;
+                                globalRate = globalRateIcecrownCitadel10M;                                
 								break;
 							case 25:
 								inflectionValue *= InflectionPointIcecrownCitadelRaid25M;
+                                globalRate = globalRateIcecrownCitadel25M;                                
 								break;
 							default:
 								inflectionValue *= InflectionPointRaid;
 						}
 					}					
 				}
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}
 			}
 			else if (creature->GetZoneId() == 4722) // Trial of the Crusader Raid
             {
-                if (instanceMap->IsHeroic())
+                if (instanceMap->IsHeroic() && instanceMap->IsRaid())
 				{
-					if (instanceMap->IsRaid())
-					{
-						switch (instanceMap->GetMaxPlayers())
-						{
-							case 10:
-								inflectionValue *= InflectionPointTrialOfCrusaderRaid10MHeroic;
-								break;
-							case 25:
-								inflectionValue *= InflectionPointTrialOfCrusaderRaid25MHeroic;
-								break;
-							default:
-								inflectionValue *= InflectionPointRaidHeroic;
-						}
-					}					
+                    switch (instanceMap->GetMaxPlayers())
+                    {
+                        case 10:
+                            inflectionValue *= InflectionPointTrialOfCrusaderRaid10MHeroic;
+                            break;
+                        case 25:
+                            inflectionValue *= InflectionPointTrialOfCrusaderRaid25MHeroic;
+                            break;
+                        default:
+                            inflectionValue *= InflectionPointRaidHeroic;
+                    }					
 				}
 				else
 				{
@@ -697,10 +758,7 @@ public:
 								inflectionValue *= InflectionPointRaid;
 						}
 					}					
-				}
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}    
+				} 
             }
             else if (creature->GetZoneId() == 3456) // Naxxramas
             {                				
@@ -717,10 +775,7 @@ public:
                         default:
                             inflectionValue *= InflectionPointRaid;
                     }
-                }									
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}     
+                }									   
             }
             else if (creature->GetZoneId() == 4273) // Ulduar
             {                				
@@ -737,10 +792,7 @@ public:
                         default:
                             inflectionValue *= InflectionPointRaid;
                     }
-                }									
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}     
+                }									  
             }
             else if (creature->GetZoneId() == 4493) // TheObsidianSanctum
             {                				
@@ -758,50 +810,7 @@ public:
                             inflectionValue *= InflectionPointRaid;
                     }
                 }									
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}     
-            } 
-            else if (creature->GetZoneId() == 4987) // TheRubySanctum
-            {                						
-                if (instanceMap->IsHeroic())
-				{
-					if (instanceMap->IsRaid())
-					{
-						switch (instanceMap->GetMaxPlayers())
-						{
-							case 10:
-								inflectionValue *= InflectionPointTheRubySanctumRaid10MHeroic;
-								break;
-							case 25:
-								inflectionValue *= InflectionPointTheRubySanctumRaid25MHeroic;
-								break;
-							default:
-								inflectionValue *= InflectionPointRaidHeroic;
-						}
-					}					
-				}
-				else
-				{
-					if (instanceMap->IsRaid())
-					{
-						switch (instanceMap->GetMaxPlayers())
-						{
-							case 10:
-								inflectionValue *= InflectionPointTheRubySanctumRaid10M;
-								break;
-							case 25:
-								inflectionValue *= InflectionPointTheRubySanctumRaid25M;
-								break;
-							default:
-								inflectionValue *= InflectionPointRaid;
-						}
-					}					
-				}				
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}     
-            }
+            }              
             else
 			{									
 				if (instanceMap->IsHeroic())
@@ -842,57 +851,61 @@ public:
 					else
 						inflectionValue *= InflectionPoint;
 				}
-				if (creature->IsDungeonBoss()) {
-					inflectionValue *= BossInflectionMult;
-				}			
 			}
-
-            float diff = ((float)maxNumberOfPlayers/5)*1.5f;                                    
-            if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 HC new scaling function 
+            if (creature->IsDungeonBoss()) {
+					inflectionValue *= BossInflectionMult;
+            }		
+            
+            if (LinearTheRubySanctum10M && creature->GetZoneId() == 4987 && !instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10) // The Ruby Sanctum
+            {                
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
+            }
+            else if (LinearTheRubySanctum25M && creature->GetZoneId() == 4987 && !instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
+            {
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
+            }
+            else if (LinearTheRubySanctum10MHeroic && creature->GetZoneId() == 4987 && instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10)
+            {
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
+            }
+            else if (LinearTheRubySanctum25MHeroic && creature->GetZoneId() == 4987 && instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
             {
                 if (creatureABInfo->instancePlayerCount < 3)
                 {
-                    defaultMultiplier = (float)3 / instanceMap->GetMaxPlayers(); // Avoid farming       
-                    globalRate = 1.0f; 
+                    defaultMultiplier = (float)requiredMinimumEndgame / instanceMap->GetMaxPlayers();
                 }
                 else
                 {
-                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
-                    globalRate = 1.0f;
+                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();                                    
                 }
             }
-            else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 NM new scaling function
-            {
-                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;     
-                globalRate = 0.85f;
+            else if (LinearIcecrownCitadel10M && creature->GetZoneId() == 4812 && !instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10) // Icecrown Citadel
+            {                
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
             }
-            else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 NM new scaling function
+            else if (LinearIcecrownCitadel25M && creature->GetZoneId() == 4812 && !instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
             {
-                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                globalRate = 1.0f;
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
             }
-            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 HC new scaling function
+            else if (LinearIcecrownCitadel10MHeroic && creature->GetZoneId() == 4812 && instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10)
             {
-                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;     
-                globalRate = 0.8f;
+                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();
             }
-            else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 HC new scaling function
+            else if (LinearIcecrownCitadel25MHeroic && creature->GetZoneId() == 4812 && instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25)
             {
                 if (creatureABInfo->instancePlayerCount < 3)
                 {
-                    defaultMultiplier = (float)3 / instanceMap->GetMaxPlayers(); // Avoid farming
-                    globalRate = 1.15f;
-                }        
+                    defaultMultiplier = (float)requiredMinimumEndgame / instanceMap->GetMaxPlayers();
+                }
                 else
                 {
-                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                    globalRate = 1.15f;
+                    defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers();                                    
                 }
             }
             else
-            {                
-                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;    
-                globalRate = 0.9f;    
+            {
+                float diff = ((float)maxNumberOfPlayers/5)*1.5f;
+                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;                                                                            
             }            
         }
 
@@ -995,7 +1008,7 @@ public:
 
         Powers pType= creature->getPowerType();
 
-        // Icecrown Citadel 25HC PP Boss tuning
+        // TODO Clean Up this garbage
         if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
         {
             string creatureName = creature->GetName();
@@ -1017,6 +1030,7 @@ public:
             }
         }
 
+        // TODO Clean Up this garbage
         if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
         {
             string creatureName = creature->GetName();

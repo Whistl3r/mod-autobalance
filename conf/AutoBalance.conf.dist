@@ -48,19 +48,47 @@ AutoBalance.InflectionPointRaid25MHeroic=0.5
 AutoBalance.InflectionPointRaid=0.5
 AutoBalance.InflectionPointRaidHeroic=0.5
 
+#       Required minimum of players from which scaling will cut off
+#       Default:    3.0
+
+AutoBalance.requiredMinimumEndgame=3
+
+#       AutoBalance.Linear series will overwrite original scaling function with linear function defaultMultiplier = playerCount/maxPlayers        
+#       therefore InflectionPoint setting will no longer have effect on scaling.
+
 #       The Ruby Sanctum
+
+AutoBalance.LinearTheRubySanctum10M=0
+AutoBalance.LinearTheRubySanctum25M=0
+AutoBalance.LinearTheRubySanctum10MHeroic=0
+AutoBalance.LinearTheRubySanctum25MHeroic=0
 
 AutoBalance.InflectionPointTheRubySanctumRaid10M=0.5
 AutoBalance.InflectionPointTheRubySanctumRaid25M=0.5
 AutoBalance.InflectionPointTheRubySanctumRaid10MHeroic=0.5
 AutoBalance.InflectionPointTheRubySanctumRaid25MHeroic=0.5
 
+AutoBalance.globalRateTheRubySanctum10M=1.0
+AutoBalance.globalRateTheRubySanctum25M=1.0
+AutoBalance.globalRateTheRubySanctum10MHeroic=1.0
+AutoBalance.globalRateTheRubySanctum25MHeroic=1.0
+
 #       Icecrown Citadel
 
+AutoBalance.LinearIcecrownCitadel10M=0
+AutoBalance.LinearIcecrownCitadel25M=0
+AutoBalance.LinearIcecrownCitadel10MHeroic=0
+AutoBalance.LinearIcecrownCitadel25MHeroic=0
+
 AutoBalance.InflectionPointIcecrownCitadelRaid10M=0.5
-AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid25M=0.5
+AutoBalance.InflectionPointIcecrownCitadelRaid10MHeroic=0.5
 AutoBalance.InflectionPointIcecrownCitadelRaid25MHeroic=0.5
+
+AutoBalance.globalRateIcecrownCitadel10M=1.0
+AutoBalance.globalRateIcecrownCitadel25M=1.0
+AutoBalance.globalRateIcecrownCitadel10MHeroic=1.0
+AutoBalance.globalRateIcecrownCitadel25MHeroic=1.0
 
 #       Icecrown Citadel 25 HC PP Oozes Tuning Multipliers
 
