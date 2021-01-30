@@ -845,7 +845,8 @@ public:
 					inflectionValue *= BossInflectionMult;
 				}			
 			}
-                                              
+
+            float diff = ((float)maxNumberOfPlayers/5)*1.5f;                                    
             if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4987) // Ruby Sanctum 25 HC new scaling function 
             {
                 if (creatureABInfo->instancePlayerCount < 3)
@@ -861,8 +862,8 @@ public:
             }
             else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 NM new scaling function
             {
-                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                globalRate = 0.9f;
+                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;     
+                globalRate = 0.85f;
             }
             else if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 NM new scaling function
             {
@@ -871,8 +872,8 @@ public:
             }
             else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Icecrown Citadel 10 HC new scaling function
             {
-                defaultMultiplier = (float)creatureABInfo->instancePlayerCount / instanceMap->GetMaxPlayers(); 
-                globalRate = 0.85f;
+                defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;     
+                globalRate = 0.8f;
             }
             else if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel 25 HC new scaling function
             {
@@ -888,8 +889,7 @@ public:
                 }
             }
             else
-            {
-                float diff = ((float)maxNumberOfPlayers/5)*1.5f;  
+            {                
                 defaultMultiplier = (tanh(((float)creatureABInfo->instancePlayerCount - inflectionValue) / diff) + 1.0f) / 2.0f;    
                 globalRate = 0.9f;    
             }            
