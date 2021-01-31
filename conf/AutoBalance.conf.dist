@@ -99,6 +99,8 @@ AutoBalance.Icc25HCGascloudDmg=0.5
 #       Icecrown Citadel 25 NM PP Oozes Tuning Multipliers
 
 AutoBalance.Icc25NMOozeHp=0.5
+AutoBalance.Icc25NOozeDmg=0.5
+AutoBalance.Icc25NGascloudDmg=0.5
 
 #       Trial of the Crusader
 

@@ -116,7 +116,8 @@ InflectionPoint, InflectionPointRaid, InflectionPointRaid10M, InflectionPointRai
 InflectionPointRaid10MHeroic, InflectionPointRaid25MHeroic, InflectionPointTrialOfCrusaderRaid10M,
 InflectionPointTrialOfCrusaderRaid10MHeroic, InflectionPointTrialOfCrusaderRaid25M, InflectionPointTrialOfCrusaderRaid25MHeroic,
 InflectionPointNaxxramasRaid10M, InflectionPointNaxxramasRaid25M, InflectionPointUlduarRaid10M, InflectionPointUlduarRaid25M,
-InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, BossInflectionMult, Icc25HCOozeHp, Icc25NMOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg;
+InflectionPointTheObsidianSanctumRaid25M, InflectionPointTheObsidianSanctumRaid10M, BossInflectionMult, Icc25HCOozeHp, Icc25NMOozeHp, Icc25HCOozeDmg, Icc25HCGascloudDmg,
+Icc25NGascloudDmg, Icc25NOozeDmg;
 
 static bool LinearTheRubySanctum10M, LinearTheRubySanctum25M, LinearTheRubySanctum10MHeroic, LinearTheRubySanctum25MHeroic;
 static float InflectionPointTheRubySanctumRaid25M, InflectionPointTheRubySanctumRaid10M, InflectionPointTheRubySanctumRaid10MHeroic, InflectionPointTheRubySanctumRaid25MHeroic,
@@ -280,6 +281,10 @@ class AutoBalance_WorldScript : public WorldScript
         // Icc 25HC PP Tuning
         Icc25HCOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeHp", 1);
         Icc25NMOozeHp = sConfigMgr->GetFloatDefault("AutoBalance.Icc25NMOozeHp", 1);
+        
+        Icc25NOozeDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25NOozeDmg", 1);
+        Icc25NGascloudDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25NGascloudDmg", 1);
+
         Icc25HCOozeDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCOozeDmg", 1);
         Icc25HCGascloudDmg = sConfigMgr->GetFloatDefault("AutoBalance.Icc25HCGascloudDmg", 1);
 
@@ -1036,6 +1041,14 @@ public:
             string creatureName = creature->GetName();
             if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
             {      
+                if (creatureName == "Gas Cloud")
+                {
+                    damageMul *= Icc25NGascloudDmg;      
+                }
+                if (creatureName == "Volatile Ooze")
+                {
+                    damageMul *= Icc25NOozeDmg;
+                }    
                 scaledHealth = round(((float) scaledHealth * Icc25NMOozeHp) + 1.0f);
             }
         }
