@@ -1045,7 +1045,7 @@ public:
         Powers pType= creature->getPowerType();
 
         // TODO Clean Up this mess
-        if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
+        if (instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel Raid
         {
             string creatureName = creature->GetName();
             if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
@@ -1067,7 +1067,7 @@ public:
         }
 
         // TODO Clean Up this mess
-        if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812)
+        if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 25 && creature->GetZoneId() == 4812) // Icecrown Citadel Raid
         {
             string creatureName = creature->GetName();
             if (creatureName == "Gas Cloud" || creatureName == "Volatile Ooze")
@@ -1081,6 +1081,14 @@ public:
                     damageMul *= Icc25NOozeDmg;
                 }    
                 scaledHealth = round(((float) scaledHealth * Icc25NMOozeHp) + 1.0f);
+            }
+        }
+
+        if (instanceMap->IsRaid() && creature->GetZoneId() == 4812) // Icecrown Citadel Raid
+        {
+            string creatureName = creature->GetName();
+            if (creatureName == "Coldflame"){
+                return;
             }
         }
 
