@@ -1086,10 +1086,13 @@ public:
 
         if (instanceMap->IsRaid() && creature->GetZoneId() == 4812) // Icecrown Citadel Raid
         {
-            string creatureName = creature->GetName();
+            string creatureName = creature->GetName();                        
             if (creatureName == "Coldflame"){
                 return;
             }
+            else if (creatureName == "Vengeful Shade"){
+                return;
+            }                      
         }
 
         creature->SetArmor(newBaseArmor);
