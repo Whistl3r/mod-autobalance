@@ -1104,64 +1104,60 @@ public:
                 {                                                          
                     if (Player* playerHandle = playerIteration->GetSource())
                     {        
-                        if (!playerHandle->IsGameMaster())
-                        {
-                            if (playerHandle->IsActiveQuest(30000))
-                            {        
-                                if (playerList.getSize() == 1)
-                                {                        
-                                    if (creature->GetName() == "The Damned"
-                                        || creature->GetName() == "Ancient Skeletal Soldier"
-                                        || creature->GetName() == "Servant of the Throne"
-                                        || creature->GetName() == "Nerub'ar Broodkeeper"
-                                        || creature->GetName() == "Deathbound Ward"
-                                        || creature->GetName() == "Deathspeaker Disciple"
-                                        || creature->GetName() == "Deathspeaker Zealot"
-                                        || creature->GetName() == "Deathspeaker Attendant"
-                                        || creature->GetName() == "Deathspeaker Servant"
-                                        || creature->GetName() == "Deathspeaker High Priest"
-                                        || creature->GetName() == "Blighted Abomination"
-                                        || creature->GetName() == "Plague Scientist"
-                                        || creature->GetName() == "Pustulating Horror"
-                                        || creature->GetName() == "Vengeful Fleshreaper"
-                                        || creature->GetName() == "Decaying Colossus"
-                                        || creature->GetName() == "Stinky"
-                                        || creature->GetName() == "Precious"
-                                        || creature->GetName() == "Val'kyr Herald"
-                                        || creature->GetName() == "Darkfallen Noble"
-                                        || creature->GetName() == "Darkfallen Blood Knight"
-                                        || creature->GetName() == "Darkfallen Archmage"
-                                        || creature->GetName() == "Darkfallen Advisor"
-                                        || creature->GetName() == "Darkfallen Tactician"
-                                        || creature->GetName() == "Darkfallen Lieutenant"
-                                        || creature->GetName() == "Darkfallen Commander"
-                                        || creature->GetName() == "Ymirjar Huntress"
-                                        || creature->GetName() == "Ymirjar Warlord"
-                                        || creature->GetName() == "Ymirjar Battle-Maiden"
-                                        || creature->GetName() == "Ymirjar Deathbringer"
-                                        || creature->GetName() == "Ymirjar Frostbinder"
-                                        || creature->GetName() == "Nerub'ar Champion"
-                                        || creature->GetName() == "Nerub'ar Webweaver"
-                                        || creature->GetName() == "Nerub'ar Broodling"
-                                        || creature->GetName() == "Frostwarden Warrior"
-                                        || creature->GetName() == "Frostwarden Sorceress"
-                                        || creature->GetName() == "Frostwarden Handler"
-                                        || creature->GetName() == "Frostwing Whelp"
-                                        || creature->GetName() == "Rimefang"
-                                        || creature->GetName() == "Spinestalker"
-                                        || creature->GetName() == "Sister Svalna")                                    
-                                    {
-                                        playerHandle->AddAura(71169, creature);                                    
-                                    }    
-                                }
-                                else
+                        if (playerHandle->IsActiveQuest(30000))
+                        {        
+                            if (instanceMap->GetPlayersCountExceptGMs() == 1)
+                            {                        
+                                if (creature->GetName() == "The Damned"
+                                    || creature->GetName() == "Ancient Skeletal Soldier"
+                                    || creature->GetName() == "Servant of the Throne"
+                                    || creature->GetName() == "Nerub'ar Broodkeeper"
+                                    || creature->GetName() == "Deathbound Ward"
+                                    || creature->GetName() == "Deathspeaker Disciple"
+                                    || creature->GetName() == "Deathspeaker Zealot"
+                                    || creature->GetName() == "Deathspeaker Attendant"
+                                    || creature->GetName() == "Deathspeaker Servant"
+                                    || creature->GetName() == "Deathspeaker High Priest"
+                                    || creature->GetName() == "Blighted Abomination"
+                                    || creature->GetName() == "Plague Scientist"
+                                    || creature->GetName() == "Pustulating Horror"
+                                    || creature->GetName() == "Vengeful Fleshreaper"
+                                    || creature->GetName() == "Decaying Colossus"
+                                    || creature->GetName() == "Stinky"
+                                    || creature->GetName() == "Precious"
+                                    || creature->GetName() == "Val'kyr Herald"
+                                    || creature->GetName() == "Darkfallen Noble"
+                                    || creature->GetName() == "Darkfallen Blood Knight"
+                                    || creature->GetName() == "Darkfallen Archmage"
+                                    || creature->GetName() == "Darkfallen Advisor"
+                                    || creature->GetName() == "Darkfallen Tactician"
+                                    || creature->GetName() == "Darkfallen Lieutenant"
+                                    || creature->GetName() == "Darkfallen Commander"
+                                    || creature->GetName() == "Ymirjar Huntress"
+                                    || creature->GetName() == "Ymirjar Warlord"
+                                    || creature->GetName() == "Ymirjar Battle-Maiden"
+                                    || creature->GetName() == "Ymirjar Deathbringer"
+                                    || creature->GetName() == "Ymirjar Frostbinder"
+                                    || creature->GetName() == "Nerub'ar Champion"
+                                    || creature->GetName() == "Nerub'ar Webweaver"
+                                    || creature->GetName() == "Nerub'ar Broodling"
+                                    || creature->GetName() == "Frostwarden Warrior"
+                                    || creature->GetName() == "Frostwarden Sorceress"
+                                    || creature->GetName() == "Frostwarden Handler"
+                                    || creature->GetName() == "Frostwing Whelp"
+                                    || creature->GetName() == "Rimefang"
+                                    || creature->GetName() == "Spinestalker"
+                                    || creature->GetName() == "Sister Svalna")                                    
                                 {
-                                    scaledHealth = scaledHealth*20;
-                                    damageMul = damageMul*20;
-                                }                            
-                            }    
-                        }                                                        
-                                                                                                                            
+                                    playerHandle->AddAura(71169, creature);                                    
+                                }    
+                            }
+                            else
+                            {
+                                scaledHealth = scaledHealth*20;
+                                damageMul = damageMul*20;
+                            }                            
+                        }                                                                                                                                                                                
                     }                                   
                 }
             }            
