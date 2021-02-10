@@ -1095,7 +1095,7 @@ public:
             }                      
         }
 
-        if (instanceMap->IsRaid() && creature->GetZoneId() == 4812) // Speedrun dependency
+        if (!instanceMap->IsHeroic() && instanceMap->IsRaid() && instanceMap->GetMaxPlayers() == 10 && creature->GetZoneId() == 4812) // Speedrun dependency
         {         
             Map::PlayerList const &playerList = instanceMap->GetPlayers();                                    
             if (!playerList.isEmpty())
@@ -1150,7 +1150,6 @@ public:
                                     || creature->GetName() == "Sister Svalna")                                    
                                 {
                                     playerHandle->AddAura(71169, creature);                                    
-                                    ChatHandler(playerHandle->GetSession()).SendSysMessage("Quest is active.");
                                 }    
                             }
                             else
